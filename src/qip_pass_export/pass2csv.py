@@ -20,14 +20,18 @@ import re
 import sys
 import types
 
+try:
+    from ._version import __version__
+except ImportError:
+    __version__ = "unknown"
+
 
 def main():
     parser = argparse.ArgumentParser(
         prog='pass2csv',
         description='Exports passwords from pass to CSV format',
-
     )
-    parser.add_argument('-V', '--version', action='version', version='%(prog)s 1.0')
+    parser.add_argument('-V', '--version', action='version', version='%(prog)s ' + __version__)
     parser.add_argument('passfiles', metavar="passfile", nargs='+', type=Path, help='Password file(s) (*.gpg) to export')
     args = parser.parse_args()
 

@@ -1,0 +1,98 @@
+[project]
+name = "qip-pass-export"
+dynamic = ["version"]
+description = "Script to export passwords from pass"
+authors = [
+  { name="Jean-Sébastien Trottier", email="jst@qualipsoft.com" },
+]
+maintainers = [
+  { name="Jean-Sébastien Trottier", email="jst@qualipsoft.com" },
+]
+keywords = ["egg"]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: File Formats",
+  "Topic :: Security",
+  "Topic :: Utilities",
+]
+dependencies = [
+  "python-gnupg",
+]
+
+[project.urls]
+Homepage = "https://github.com/qualIP/qip-pass-export"
+Repository = "https://github.com/qualIP/qip-pass-export"
+Issues = "https://github.com/qualIP/qip-pass-export/issues"
+
+[project.scripts]
+pass2csv = "qip_pass_export.pass2csv:main"
+
+[project.optional-dependencies]
+dev = [
+  "hatch",
+]
+
+[build-system]
+requires = [
+  "hatchling",
+  "hatch-vcs",
+]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/qip_pass_export/_version.py"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+  "/venv",
+  "/docs",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/qip_pass_export"]
+
+[tool.hatch.envs.lint]
+detached = true
+dependencies = [
+  "ruff",
+  "black",
+]
+
+[tool.hatch.envs.lint.scripts]
+check = [
+  "ruff {args:src/}",
+  "black --check --diff {args:src/}",
+]
+fmt = [
+  "ruff --fix {args:src/}",
+  # "black {args:src/}",
+]
+
+[tool.black]
+force-exclude = """
+src/qip_pass_export/_version.py
+"""
+# Less than ruff since only used for checking
+line-length = 120
+
+[tool.ruff]
+extend-exclude = [
+  "src/qip_pass_export/_version.py",
+]
+line-length = 120

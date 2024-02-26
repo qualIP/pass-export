@@ -19,42 +19,47 @@ In particular the output format is supposedly Bitwarden's own format. See "Csv (
 > This script can only decrypt password files for which you are the intended recipient, e.g., you posess the corresponding GPG private keys.
 > This is NOT a brute-force decrypter, you must *own* the data.
 
-## Installation
+## Installation from source
 
 Minimum requirements:
 
 - Python 3.x (tested with 3.11)
 
+### Get the source
+
 Clone the repository:
 
 ```sh
 git clone https://github.com/qualIP/qip-pass-export.git
-cd qip-pass-export
 ```
 
-Required Python modules are in [requirements.txt](requirements.txt) -- Really just `python-gnupg`.
+### Python virtual environment
 
-You can install `python-gnupg` in your Linux distribution's standard packages or with `pip`.
+Ideally, you create or activate a Python virtual environment.
 
-On Debian and derivative distributions based on `apt`, this should work:
-
-```sh
-sudo apt install python3-gnupg
-```
+I recommend creating a Python virtual environment just for this tool so, when you are done, you can just remove the whole `qip-pass-export` directory and that will leave nothing behind to cleanup.
 
 Otherwise, it is recommended to create a simple Python virtual environment, preferably under the qip-pass-export directory itself:
 
 ```sh
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+python3 -m venv qip-pass-export/venv
+source qip-pass-export/venv/bin/activate
+pip install --upgrade pip
 ```
 
 You may need to install your distributions Python venv module, e.g, the `python3-venv` package.
 
+### Install the qip-pass-export package
+
+```sh
+pip install ./qip-pass-export
+```
+
+Make sure to include the above `./` to tell pip this is a directory, not a package name.
+
 ## Usage
 
-### Exporting pass passwords
+### Exporting `pass` passwords
 
 Usage is simple, just provide paths to pass `.gpg` files and it will output a CSV file on its standard output which you can pipe to a file of your choice.
 Typically, pass stores your password files under the `~/.password-store` directory.
@@ -62,19 +67,19 @@ Typically, pass stores your password files under the `~/.password-store` directo
 Example: Export top-level passwords
 
 ```sh
-./pass2csv ~/.password-store/*.gpg > pass.csv
+pass2csv ~/.password-store/*.gpg > pass.csv
 ```
 
 Example: Export passwords from a sub-directory
 
 ```sh
-./pass2csv ~/.password-store/sub-directory/*.gpg > pass.csv
+pass2csv ~/.password-store/sub-directory/*.gpg > pass.csv
 ```
 
 Example: Export all passwords at once
 
 ```sh
-find ~/.password-store -name '*.gpg' -print0 | xargs -r0 ./pass2csv > pass.csv
+find ~/.password-store -name '*.gpg' -print0 | xargs -r0 pass2csv > pass.csv
 ```
 
 Please be patient, it takes a while to decrypt each individual file.
